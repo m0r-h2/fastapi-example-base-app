@@ -6,9 +6,12 @@ class RunConfig(BaseModel):
     host: str = "127.0.0.1"
     port: str = 8000
 
+class ApiV1Prefix(BaseModel):
+    prefix: str = "/v1"
 
 class ApiPrefix(BaseModel):
     prefix: str = "/api"
+    v1: ApiV1Prefix =  ApiV1Prefix()
 
 
 class SqlalchemyConfig(BaseModel):
