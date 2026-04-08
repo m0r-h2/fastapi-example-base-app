@@ -22,7 +22,7 @@ class DatabaseConfig(BaseModel):
     password: str = "password"
     database: str ="shop"
     port: int = 5432
-    host: str = "db"
+    host: str = "localhost"
     driver_name: str = "postgresql+asyncpg"
     @property
     def async_url(self) -> URL:
