@@ -1,6 +1,12 @@
+from dotenv import load_dotenv
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import BaseModel
 from sqlalchemy import URL
+import os
+import dotenv
+
+load_dotenv()
+
 
 class RunConfig(BaseModel):
     host: str = "127.0.0.1"
@@ -21,10 +27,10 @@ class SqlalchemyConfig(BaseModel):
     max_overflow: int = 10
 
 class DatabaseConfig(BaseModel):
-    username: str = "user"
-    password: str = "password"
-    database: str ="shop"
-    port: int = 5432
+    username: str = os.getenv("APP_CONFIG__DB__USERNAME")
+    password: str = os.getenv("APP_CONFIG__DB__PASSWORD")
+    database: str = os.getenv("APP_CONFIG__DB__DATABASE")
+    port: int = os.getenv("APP_CONFIG__DB__PORT")
     host: str = "localhost"
     driver_name: str = "postgresql+asyncpg"
     @property

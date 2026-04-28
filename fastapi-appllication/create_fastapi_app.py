@@ -6,7 +6,6 @@ from fastapi.openapi.docs import (
     get_swagger_ui_html,
     get_swagger_ui_oauth2_redirect_html,
 )
-from fastapi.responses import ORJSONResponse
 
 from core.models import db_helper
 
@@ -49,7 +48,6 @@ def create_app(
         create_custom_static_urls: bool = False,
 ) -> FastAPI:
     app = FastAPI(
-        default_response_class=ORJSONResponse,
         lifespan=lifespan,
         docs_url=None if create_custom_static_urls else "/docs",
         redoc_url=None if create_custom_static_urls else "/redoc",

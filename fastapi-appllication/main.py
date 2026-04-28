@@ -2,7 +2,7 @@ import uvicorn
 
 from core.config import settings
 from create_fastapi_app import create_app
-from api import router as api_router
+from api import router as api_router_v1
 
 
 main_app = create_app(
@@ -10,8 +10,7 @@ main_app = create_app(
 )
 
 main_app.include_router(
-    api_router,
-    prefix=settings.api.prefix
+    api_router_v1,
 )
 
 if __name__ == "__main__":
