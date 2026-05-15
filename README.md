@@ -1,4 +1,4 @@
-# HiTalent — Org Structure API
+# HiTalent — Тестовое Задание 
 
 REST API на **FastAPI** для управления иерархией отделов и сотрудниками.
 

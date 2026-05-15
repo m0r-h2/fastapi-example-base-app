@@ -16,8 +16,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY app ./app
 COPY scripts ./scripts
 
-RUN chmod +x scripts/docker-entrypoint.sh
+# Strip Windows CRLF so the shebang is valid in Linux containers
+RUN sed -i 's/\r$//' scripts/docker-entrypoint.sh \
+    && chmod +x scripts/docker-entrypoint.sh
 
 EXPOSE 8000
 
-ENTRYPOINT ["scripts/docker-entrypoint.sh"]
+ENTRYPOINT ["/bin/sh", "scripts/docker-entrypoint.sh"]
