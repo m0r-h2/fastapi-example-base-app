@@ -1,21 +1,25 @@
 [project]
-name = "fastapi-example-base-app"
-version = "0.1.0"
-description = "Add your description here"
+name = "fastapi-hitalent-test-assignment"
+version = "1.0.0"
+description = "REST API for hierarchical departments and employees"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "alembic>=1.18.4",
     "asyncpg>=0.31.0",
-    "black>=26.3.1",
     "fastapi>=0.135.3",
     "pydantic-settings>=2.13.1",
     "pydantic[email]>=2.12.5",
+    "python-dotenv>=1.2.0",
     "sqlalchemy[asyncio]>=2.0.49",
-    "uvicorn[standart]>=0.43.0",
+    "uvicorn[standard]>=0.43.0",
 ]
 
 [dependency-groups]
 dev = [
+    "aiosqlite>=0.21.0",
     "black>=26.3.1",
+    "httpx>=0.28.1",
+    "pytest>=8.3.0",
+    "pytest-asyncio>=0.25.0",
 ]
