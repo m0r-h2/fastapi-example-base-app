@@ -1,24 +1,55 @@
 services:
-
-  pg:
-    image: postgres
+  db:
+    image: postgres:16-alpine
+    container_name: hitalent_postgres
+    restart: unless-stopped
     environment:
       POSTGRES_DB: ${APP_CONFIG__DB__DATABASE}
       POSTGRES_USER: ${APP_CONFIG__DB__USERNAME}
       POSTGRES_PASSWORD: ${APP_CONFIG__DB__PASSWORD}
     ports:
-      - "${APP_CONFIG__DB__PORT}:${APP_CONFIG__DB__PORT}"
+      - "${APP_CONFIG__DB__PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${APP_CONFIG__DB__USERNAME} -d ${APP_CONFIG__DB__DATABASE}",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 5s
 
-  adminer:
-    image: adminer
-    ports:
-      - "8080:8080"
-
-  pgadmin:
-    image: dpage/pgadmin4
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hitalent_api
+    restart: unless-stopped
+    env_file:
+      - .env
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.org
-      PGADMIN_DEFAULT_PASSWORD: admin
-      PGADMIN_CONFIG_SERVER_MODE: 'False'
+      APP_CONFIG__DB__HOST: db
+      APP_CONFIG__RUN__PORT: 8000
     ports:
-      - "5050:80"
+      - "${APP_CONFIG__RUN__PORT:-8000}:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health')",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+
+volumes:
+  postgres_data:
